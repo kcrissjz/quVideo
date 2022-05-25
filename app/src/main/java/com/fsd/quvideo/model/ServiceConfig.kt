@@ -10,34 +10,29 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserInfoManager (private val context: Context) {
+class ServiceConfig(private val context: Context) {
   companion object {
-    private val Context.userStore: DataStore<Preferences> by preferencesDataStore("user_store")
-    val LOGGED = booleanPreferencesKey("LOGGED")
-    val USERNAME = stringPreferencesKey("USERNAME")
+    private val Context.userStore: DataStore<Preferences> by preferencesDataStore("service_store")
+    val ISFIRSTENTER = booleanPreferencesKey("IS_FIRSTENTER")
+
   }
 
-  val logged: Flow<Boolean> = context.userStore.data.map {
-    it[LOGGED] ?: false
-  }
-  val userName: Flow<String> = context.userStore.data.map {
-    it[USERNAME] ?: ""
+  val isFirstEnter: Flow<Boolean> = context.userStore.data.map {
+    it[ISFIRSTENTER] ?: true
   }
 
   /**
-   * 存储用户信息
+   * 第一次进入app 显示隐私协议弹框
    */
-  suspend fun save(userName: String) {
+  suspend fun saveFirstEnter(isFirstEnter: Boolean) {
     context.userStore.edit {
-      it[LOGGED] = userName.isNotEmpty()
-      it[USERNAME] = userName
+      it[ISFIRSTENTER] = isFirstEnter
     }
   }
 
   suspend fun clear(){
     context.userStore.edit {
-      it[LOGGED] = false
-      it[USERNAME] = ""
+//      it[ISFIRSTENTER] = false
     }
   }
 }

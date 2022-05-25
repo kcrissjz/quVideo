@@ -10,3 +10,9 @@ import androidx.compose.ui.graphics.Color
 val primary = Color(0xFFFF6D4A)
 val primaryVariant = Color(0XFFFC9830)
 val secondary = Color(0xffffffff)
+
+
+val black_333 = Color(0xff333333)
+val white = Color(0xffffffff)
+val yellow_02d = Color(0xffFF902D)
+
