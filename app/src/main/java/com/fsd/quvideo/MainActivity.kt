@@ -15,7 +15,9 @@ import androidx.core.view.WindowCompat
 import com.fsd.quvideo.ui.navigation.NavHostApp
 import com.fsd.quvideo.ui.theme.QuVideoTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

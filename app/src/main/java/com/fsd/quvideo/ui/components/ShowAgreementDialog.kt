@@ -25,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.fsd.quvideo.ui.theme.black_333
 import com.fsd.quvideo.ui.theme.white
 import com.fsd.quvideo.ui.theme.yellow_02d
@@ -32,26 +33,28 @@ import com.fsd.quvideo.ui.theme.yellow_02d
 @SuppressLint("UnrememberedMutableState")
 @Composable
 fun ShowAgreementDialog(
-  isShow: Boolean,
   title: String = "提示",
   onCancelDialog: () -> Unit = {},
   onConfirmDialog: () -> Unit = {}
 ) {
-  var dialogWith: Float
-  with(LocalDensity.current) {
-    dialogWith = (LocalConfiguration.current.screenWidthDp * 0.65).dp.toPx()
+  var dialogWidth:Float
+  with(LocalDensity.current){
+    dialogWidth = ((LocalConfiguration.current.screenWidthDp* 0.25).dp ).toPx()
   }
   var showDialog by remember {
-    mutableStateOf(isShow)
+    mutableStateOf(true)
   }
-  Column() {
     if (showDialog) {
-      Dialog(onDismissRequest = { showDialog = false }) {
+      Dialog(
+        onDismissRequest = { showDialog = false },
+        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false),
+      ) {
         Box(
           modifier = Modifier
+            .width(dialogWidth.dp)
             .clip(RoundedCornerShape(6.dp))
             .background(color = white)
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 16.dp)
         ) {
           Column(
             verticalArrangement = Arrangement.Center,
@@ -96,7 +99,6 @@ fun ShowAgreementDialog(
         }
       }
     }
-  }
 }
 
 

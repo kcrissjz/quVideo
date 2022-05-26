@@ -1,28 +1,36 @@
 package com.fsd.quvideo.viewmodel
 
-import android.content.Context
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fsd.quvideo.model.ServiceConfig
-import kotlinx.coroutines.flow.firstOrNull
+import com.fsd.quvideo.http.HttpService
+import com.fsd.quvideo.http.encrypt.NoneParam
+import com.fsd.quvideo.http.encrypt.Param
+import com.fsd.quvideo.util.LogHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashViewModel(context: Context) :ViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+  private var service: HttpService,) :ViewModel() {
 
-
-  val serviceConfig = ServiceConfig(context)
-  var isFirstEnter by mutableStateOf(true)
-  init {
+  fun getAppConfigs(){
     viewModelScope.launch {
-      isFirstEnter = serviceConfig.isFirstEnter.firstOrNull() == true
+       flow {
+         val pair = Param().getPair()
+         LogHelper.d("pair${pair.first}--${pair.second}")
+         emit(service.getAppConfigs(pair.first,pair.second))
+       }.onStart {
+          Log.d("getAppConfigs","onStart:")
+       }.onEach {
+         Log.d("getAppConfigs","onEach:${it.code}--${it.msg}--${it.data}")
+
+       }.collect()
+
     }
   }
-  fun saveFirstEnter() {
-    viewModelScope.launch {
-      serviceConfig.saveFirstEnter(false)
-    }
-  }
+
 }
