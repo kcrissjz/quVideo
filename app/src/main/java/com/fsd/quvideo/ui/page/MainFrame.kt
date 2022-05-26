@@ -9,13 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.fsd.quvideo.R
 import com.fsd.quvideo.model.entity.NavigationItem
 import com.fsd.quvideo.ui.theme.primary
 import kotlin.system.exitProcess
 
 @Composable
-fun MainFrame() {
+fun MainFrame(navCtrl: NavHostController) {
   val navigationItems = listOf(
     NavigationItem(
       "首页",
@@ -80,10 +81,10 @@ fun MainFrame() {
   }) {
     Box(modifier = Modifier.padding(it)) {
       when (currentNavigationIndex) {
-        0 -> HomePage()
-        1 -> CategoryPage()
-        2 -> VipPage()
-        3 -> MinePage()
+        0 -> HomePage(navCtrl = navCtrl)
+        1 -> CategoryPage(navCtrl = navCtrl)
+        2 -> VipPage(navCtrl = navCtrl)
+        3 -> MinePage(navCtrl = navCtrl)
       }
     }
   }

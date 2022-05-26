@@ -11,19 +11,37 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.fsd.quvideo.R
 import com.fsd.quvideo.ui.components.ShowAgreementDialog
 import com.fsd.quvideo.manager.AppConfigManager
+import com.fsd.quvideo.ui.components.LcePage
+import com.fsd.quvideo.ui.navigation.Destinations
+import com.fsd.quvideo.util.RouteUtils
+import com.fsd.quvideo.viewmodel.SplashViewAction
 import com.fsd.quvideo.viewmodel.SplashViewModel
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashPage(onNavigationToMain: () -> Unit = {},splashViewModel: SplashViewModel= hiltViewModel()) {
+fun SplashPage(navCtrl: NavHostController, viewModel: SplashViewModel = hiltViewModel()) {
   val context = LocalContext.current
-  LaunchedEffect(Unit) {
-    //    delay(3000)
-    //    onNavigationToMain()
-    splashViewModel.getAppConfigs()
+
+  val viewState = viewModel.viewStates
+
+  LaunchedEffect(Unit){
+    if(!AppConfigManager.isFirstEnter){
+      viewModel.dispatch(SplashViewAction.FetchConfigData)
+    }
   }
+
+  LaunchedEffect(viewModel.viewStates) {
+
+    if (viewState.readyData) {
+      delay(1000)
+      RouteUtils.navTo(navCtrl,Destinations.HomeFrame.route)
+    }
+  }
+
 
   Box(modifier = Modifier.fillMaxSize()) {
     Image(
@@ -37,8 +55,10 @@ fun SplashPage(onNavigationToMain: () -> Unit = {},splashViewModel: SplashViewMo
         },
         onConfirmDialog = {
           AppConfigManager.isFirstEnter = false
+          viewModel.dispatch(SplashViewAction.FetchConfigData)
         })
     }
+
 
   }
 }

@@ -1,5 +1,9 @@
 package com.fsd.quvideo.manager
 
+import com.fsd.quvideo.model.entity.UserInfo
+import com.fsd.quvideo.util.fromJson
+import com.fsd.quvideo.util.toJson
+
 
 object AppUserManager {
   private const val LOGGED_FLAG = "logged_flag"
@@ -12,10 +16,10 @@ object AppUserManager {
     get() = DataStoreManager.readStringData(TOKEN_FLAG, "")
     set(value) = DataStoreManager.saveSyncStringData(TOKEN_FLAG, value = value)
 
-  //    var userInfo: UserInfo?
-  //        get() = DataStoreUtils.readStringData(USER_INFO).fromJson()
-  //        set(value) = DataStoreUtils.saveSyncStringData(USER_INFO, value = value?.toJson() ?: "")
-  //
+      var userInfo: UserInfo?
+          get() = DataStoreManager.readStringData(USER_INFO).fromJson()
+          set(value) = DataStoreManager.saveSyncStringData(USER_INFO, value = value?.toJson() ?: "")
+
   //    fun onLogin(userInfo: UserInfo) {
   //        isLogged = true
   //        AppUserUtil.userInfo = userInfo

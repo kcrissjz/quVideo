@@ -5,3 +5,10 @@ sealed class PageState {
   data class Success(val isEmpty: Boolean) : PageState()
   data class Error(val exception: Throwable) : PageState()
 }
+
+sealed class FetchStatus {
+  object Fetching : FetchStatus()
+  object Fetched : FetchStatus()
+  object NotFetched : FetchStatus()
+}
+

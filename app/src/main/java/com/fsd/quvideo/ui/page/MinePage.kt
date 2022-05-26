@@ -5,17 +5,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
 
 @Composable
-fun MinePage() {
+fun MinePage(navCtrl: NavHostController) {
   Column() {
     Text(text = "wd")
   }
-}
-
-@Preview
-@Composable
-fun MinePagePreview() {
-  MinePage()
 }
 
