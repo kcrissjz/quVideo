@@ -12,6 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.fsd.quvideo.R
 import com.fsd.quvideo.model.entity.NavigationItem
+import com.fsd.quvideo.ui.page.category.CategoryPage
+import com.fsd.quvideo.ui.page.home.HomePage
+import com.fsd.quvideo.ui.page.mine.MinePage
+import com.fsd.quvideo.ui.page.vip.VipPage
 import com.fsd.quvideo.ui.theme.primary
 import kotlin.system.exitProcess
 

@@ -1,4 +1,4 @@
-package com.fsd.quvideo.ui.page
+package com.fsd.quvideo.ui.page.vip
 
 
 import androidx.compose.foundation.layout.Column

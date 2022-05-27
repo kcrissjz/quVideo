@@ -1,4 +1,4 @@
-package com.fsd.quvideo.ui.page
+package com.fsd.quvideo.ui.page.mine
 
 
 import androidx.compose.foundation.layout.Column
@@ -8,11 +8,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 
 @Composable
-fun HomePage(navCtrl: NavHostController) {
-    Column() {
-        Text(text = "首页")
-    }
+fun MinePage(navCtrl: NavHostController) {
+  Column() {
+    Text(text = "wd")
+  }
 }
-
-
 

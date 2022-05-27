@@ -1,4 +1,4 @@
-package com.fsd.quvideo.ui.page
+package com.fsd.quvideo.ui.page.category
 
 
 import androidx.compose.foundation.layout.Column
@@ -8,9 +8,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 
 @Composable
-fun MinePage(navCtrl: NavHostController) {
+fun CategoryPage(navCtrl: NavHostController) {
   Column() {
-    Text(text = "wd")
+    Text(text = "fenlei")
   }
 }
+
 
