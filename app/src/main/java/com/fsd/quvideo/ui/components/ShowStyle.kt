@@ -73,45 +73,7 @@ fun ShowStyle4(showStyleData: Type?, pageState: PageState) {
         } else {
             moveList = showStyleData.videos.subList(1, showStyleData.videos.size)
         }
-
-        val myId = "inlineContent"
-        val text = buildAnnotatedString {
-            appendInlineContent(myId, "[icon]")
-            append(" ")
-            append(showStyleData.name)
-        }
-        val inlineContent = mapOf(
-            Pair(
-                myId,
-                InlineTextContent(
-                    Placeholder(
-                        width = sp_14,
-                        height = sp_18,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                    )
-                ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.ic_home_popular),
-                        contentDescription = null,
-                    )
-                }
-            )
-        )
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = text,
-                inlineContent = inlineContent,
-                fontWeight = FontWeight.Bold,
-                fontSize = sp_17,
-                color = white,
-                modifier = Modifier.weight(1f)
-            )
-            Text(text = "查看更多 >", fontSize = sp_12, color = gray_999)
-        }
+        ShowStyleTitle(showStyleData.name)
         Box(modifier = Modifier.padding(top = dp_18)) {
             AsyncImage(
                 model = bagCover,
@@ -138,25 +100,67 @@ fun ShowStyle4(showStyleData: Type?, pageState: PageState) {
             )
         }
         Spacer(modifier = Modifier.height(dp_15))
-        RowImage(moveList[0], moveList[1], moveList[2], pageState = pageState)
+        ShowStyle4RowImage(moveList[0], moveList[1], moveList[2], pageState = pageState)
         Spacer(modifier = Modifier.height(dp_15))
-        RowImage(moveList[3], moveList[4], moveList[5], pageState = pageState)
+        ShowStyle4RowImage(moveList[3], moveList[4], moveList[5], pageState = pageState)
     }
 }
 
 @Composable
-fun RowImage(move1: Video, move2: Video, move3: Video, pageState: PageState) {
+fun ShowStyleTitle(name:String) {
+    val myId = "inlineContent"
+    val text = buildAnnotatedString {
+        appendInlineContent(myId, "[icon]")
+        append(" ")
+        append(name)
+    }
+    val inlineContent = mapOf(
+        Pair(
+            myId,
+            InlineTextContent(
+                Placeholder(
+                    width = sp_14,
+                    height = sp_18,
+                    placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+                )
+            ) {
+                Image(
+                    painter = painterResource(id = R.mipmap.ic_home_popular),
+                    contentDescription = null,
+                )
+            }
+        )
+    )
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = text,
+            inlineContent = inlineContent,
+            fontWeight = FontWeight.Bold,
+            fontSize = sp_17,
+            color = white,
+            modifier = Modifier.weight(1f)
+        )
+        Text(text = "查看更多 >", fontSize = sp_12, color = gray_999)
+    }
+
+
+}
+@Composable
+fun ShowStyle4RowImage(move1: Video, move2: Video, move3: Video, pageState: PageState) {
     Row(
         modifier = Modifier
             .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        RowItem(move = move1, pageState = pageState)
-        RowItem(move = move2, pageState = pageState)
-        RowItem(move = move3, pageState = pageState)
+        ShowStyleRowImageItem(move = move1, pageState = pageState)
+        ShowStyleRowImageItem(move = move2, pageState = pageState)
+        ShowStyleRowImageItem(move = move3, pageState = pageState)
     }
 }
 @Composable
-fun RowItem(move: Video, pageState: PageState){
+fun ShowStyleRowImageItem(move: Video, pageState: PageState){
     Column(modifier = Modifier) {
         Box(modifier = Modifier) {
             AsyncImage(
