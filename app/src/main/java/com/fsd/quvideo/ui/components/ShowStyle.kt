@@ -66,6 +66,8 @@ fun ShowStyle4(showStyleData: Type?, pageState: PageState) {
         var moveList = emptyList<Video>()
         if (showStyleData == null) return@Column
         val bagCover = showStyleData.videos[0].cover
+        val bagIsCheck = showStyleData.videos[0].isCheck
+
         if (showStyleData.videos.size > 7) {
             moveList = showStyleData.videos.subList(1, 7)
         } else {
@@ -110,34 +112,55 @@ fun ShowStyle4(showStyleData: Type?, pageState: PageState) {
             )
             Text(text = "查看更多 >", fontSize = sp_12, color = gray_999)
         }
-        AsyncImage(
-            model = bagCover,
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = dp_18)
-                .aspectRatio(16 / 9f)
-                .clip(RoundedCornerShape(dp_8))
-                .placeholder(
-                    visible = pageState is PageState.Loading,
-                    highlight = PlaceholderHighlight.shimmer()
-                ),
-            contentScale = ContentScale.Crop
-        )
+        Box(modifier = Modifier.padding(top = dp_18)) {
+            AsyncImage(
+                model = bagCover,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(16 / 9f)
+                    .clip(RoundedCornerShape(dp_8))
+                    .placeholder(
+                        visible = pageState is PageState.Loading,
+                        highlight = PlaceholderHighlight.shimmer()
+                    ),
+                contentScale = ContentScale.Crop
+            )
+            Image(
+                painter = painterResource(id = if (bagIsCheck == "1") R.mipmap.free_icon else R.mipmap.vip_icon),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(top = dp_4, end = dp_4)
+                    .size(width = dp_30, height = dp_13)
+                    .align(
+                        Alignment.TopEnd
+                    ),
+            )
+        }
         Spacer(modifier = Modifier.height(dp_15))
-        RowImage(moveList[0],moveList[1],moveList[2], pageState = pageState)
+        RowImage(moveList[0], moveList[1], moveList[2], pageState = pageState)
         Spacer(modifier = Modifier.height(dp_15))
-        RowImage(moveList[3],moveList[4],moveList[5], pageState = pageState)
+        RowImage(moveList[3], moveList[4], moveList[5], pageState = pageState)
     }
 }
 
 @Composable
-fun RowImage(move1: Video, move2: Video, move3: Video,pageState: PageState) {
-    Row(modifier = Modifier
-        .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Column(modifier = Modifier) {
+fun RowImage(move1: Video, move2: Video, move3: Video, pageState: PageState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        RowItem(move = move1, pageState = pageState)
+        RowItem(move = move2, pageState = pageState)
+        RowItem(move = move3, pageState = pageState)
+    }
+}
+@Composable
+fun RowItem(move: Video, pageState: PageState){
+    Column(modifier = Modifier) {
+        Box(modifier = Modifier) {
             AsyncImage(
-                model = move1.cover,
+                model = move.cover,
                 contentDescription = null,
                 modifier = Modifier
                     .size(width = dp_113, height = dp_144)
@@ -148,41 +171,19 @@ fun RowImage(move1: Video, move2: Video, move3: Video,pageState: PageState) {
                     ),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.height(dp_10))
-            Text(text = move1.name, fontSize = sp_13, color = white)
-        }
-        Column(modifier = Modifier) {
-            AsyncImage(
-                model = move2.cover,
+            Image(
+                painter = painterResource(id = if (move.isCheck == "1") R.mipmap.free_icon else R.mipmap.vip_icon),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(width = dp_113, height = dp_144)
-                    .clip(RoundedCornerShape(dp_8))
-                    .placeholder(
-                        visible = pageState is PageState.Loading,
-                        highlight = PlaceholderHighlight.shimmer()
+                    .padding(top = dp_4, end = dp_4)
+                    .size(width = dp_30, height = dp_13)
+                    .align(
+                        Alignment.TopEnd
                     ),
-                contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.height(dp_10))
-            Text(text = move2.name, fontSize = sp_13, color = white)
         }
-        Column(modifier = Modifier) {
-            AsyncImage(
-                model = move3.cover,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(width = dp_113, height = dp_144)
-                    .clip(RoundedCornerShape(dp_8))
-                    .placeholder(
-                        visible = pageState is PageState.Loading,
-                        highlight = PlaceholderHighlight.shimmer()
-                    ),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.height(dp_10))
-            Text(text = move3.name, fontSize = sp_13, color = white)
-        }
+        Spacer(modifier = Modifier.height(dp_10))
+        Text(text = move.name, fontSize = sp_13, color = white)
     }
 }
 
