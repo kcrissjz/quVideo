@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fsd.quvideo.http.HttpService
 import com.fsd.quvideo.http.PageState
+import com.fsd.quvideo.http.encrypt.JSONReqParams
 import com.fsd.quvideo.http.encrypt.NoneParam
+import com.fsd.quvideo.model.entity.FeatureData
 import com.fsd.quvideo.model.entity.HeadMenu
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -25,7 +27,7 @@ class HomeViewModel @Inject constructor(private val service: HttpService) : View
 
     fun dispatch(action: HomeViewAction) {
         when (action) {
-            HomeViewAction.FetchData -> {
+            is HomeViewAction.FetchData -> {
                 fetchData()
             }
         }
@@ -49,17 +51,17 @@ class HomeViewModel @Inject constructor(private val service: HttpService) : View
                 viewStates = viewStates.copy(pageState = PageState.Error(it))
             }.onCompletion {
                 val s = listOf(
-                    HeadMenu(label = "沙僧", mhid = "1123"),
-                    HeadMenu(label = "沙1僧", mhid = "1223"),
-                    HeadMenu(label = "1沙僧", mhid = "3123"),
-                    HeadMenu(label = "染发", mhid = "3123"),
-                    HeadMenu(label = "福袋", mhid = "3123"),
-                    HeadMenu(label = "而非", mhid = "3123"),
-                    HeadMenu(label = "反倒是", mhid = "3123"),
-                    HeadMenu(label = "说的我", mhid = "3123"),
-                    HeadMenu(label = "说的我", mhid = "3123"),
-                    HeadMenu(label = "等分", mhid = "3123"),
-                    HeadMenu(label = "反倒是", mhid = "3123"),
+                    HeadMenu(label = "沙僧", mhid = "11"),
+                    HeadMenu(label = "沙1僧", mhid = "11"),
+                    HeadMenu(label = "1沙僧", mhid = "11"),
+                    HeadMenu(label = "染发", mhid = "11"),
+                    HeadMenu(label = "福袋", mhid = "11"),
+                    HeadMenu(label = "而非", mhid = "11"),
+                    HeadMenu(label = "反倒是", mhid = "11"),
+//                    HeadMenu(label = "说的我", mhid = "3123"),
+//                    HeadMenu(label = "说的我", mhid = "3123"),
+//                    HeadMenu(label = "等分", mhid = "3123"),
+//                    HeadMenu(label = "反倒是", mhid = "3123"),
                 )
                 val ss = viewStates.headMenus
                 ss.addAll(s)
@@ -67,6 +69,9 @@ class HomeViewModel @Inject constructor(private val service: HttpService) : View
 
         }
     }
+
+
+
 }
 
 data class HomeViewState(

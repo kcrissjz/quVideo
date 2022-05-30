@@ -76,7 +76,7 @@ interface HttpService {
     suspend fun getPageInfoByHeaderMenusId(
         @Header("s") s: String,
         @QueryMap map: Map<String, @JvmSuppressWildcards Any>
-    ): BasicBean<Any>
+    ): BasicBean<FeatureData>
 
     @POST("voi/vip/getBaseVips")
     suspend fun getBaseVips(
