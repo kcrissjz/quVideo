@@ -43,11 +43,18 @@ fun FeaturedPage(
         }
         item {
             viewState.featureData?.types?.forEachIndexed { index, type ->
-                when(viewState.featureData.types[index].showStyle){
-                    4->{
-                        if (viewState.showStyle4Data!=null){
-                            ShowStyle4(showStyleData = viewState.featureData.types[index], pageState  = viewState.pageState)
-                        }
+                when (viewState.featureData.types[index].showStyle) {
+                    1 -> {
+                        ShowStyle1(
+                            showStyleData = viewState.featureData.types[index],
+                            pageState = viewState.pageState
+                        )
+                    }
+                    4 -> {
+                        ShowStyle4(
+                            showStyleData = viewState.featureData.types[index],
+                            pageState = viewState.pageState
+                        )
                     }
                 }
             }

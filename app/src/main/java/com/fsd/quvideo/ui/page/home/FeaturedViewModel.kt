@@ -42,17 +42,6 @@ class FeaturedViewModel @Inject constructor(private val service: HttpService) : 
                     pageState = PageState.Success(true),
                     featureData = it.data!!
                 )
-                val types = featuredViewState.featureData?.types
-                types?.forEachIndexed { index, type ->
-                    when (types[index].showStyle) {
-                        4 -> {
-                            featuredViewState = featuredViewState.copy(
-                                showStyle4Data = type
-                            )
-                        }
-                    }
-
-                }
             }.catch {
                 featuredViewState = featuredViewState.copy(pageState = PageState.Error(it))
             }.collect()
@@ -63,7 +52,6 @@ class FeaturedViewModel @Inject constructor(private val service: HttpService) : 
 data class FeaturedViewState(
     val pageState: PageState = PageState.Loading,
     val featureData: FeatureData? = null,
-    val showStyle4Data: Type? = null,
 )
 
 sealed class FeaturedViewAction() {

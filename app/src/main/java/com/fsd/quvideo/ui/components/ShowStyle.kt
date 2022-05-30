@@ -3,11 +3,9 @@ package com.fsd.quvideo.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
@@ -30,6 +28,7 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.LocalImageLoader
@@ -41,6 +40,8 @@ import com.fsd.quvideo.http.PageState
 import com.fsd.quvideo.model.entity.Type
 import com.fsd.quvideo.model.entity.Video
 import com.fsd.quvideo.ui.theme.*
+import com.fsd.quvideo.util.LogHelper
+import com.fsd.quvideo.util.showToast
 import com.google.accompanist.placeholder.PlaceholderDefaults
 import com.google.accompanist.placeholder.PlaceholderHighlight
 import com.google.accompanist.placeholder.material.placeholder
@@ -48,9 +49,31 @@ import com.google.accompanist.placeholder.material.shimmer
 import com.google.accompanist.placeholder.placeholder
 
 @Composable
-public fun ShowStyle1() {
-    Column {
-
+fun ShowStyle1(showStyleData: Type?, pageState: PageState) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = dp_36)
+    ) {
+        var moveList = showStyleData?.videos?: emptyList()
+        if (moveList.isEmpty()) return@Column
+        ShowStyleTitle(name = showStyleData!!.name)
+        Spacer(modifier = Modifier.height(dp_15))
+        LazyRow(){
+            items(moveList){item ->
+                 ShowStyleImageItem(
+                     pageState = pageState,
+                     cover = item.cover,
+                     tagIscheck = item.isCheck,
+                     name = item.name,
+                     width = dp_205,
+                     height = dp_136,
+                 ){
+                     LogHelper.d(item.name)
+                 }
+                Spacer(modifier = Modifier.width(dp_8))
+            }
+        }
     }
 }
 
@@ -154,21 +177,30 @@ fun ShowStyle4RowImage(move1: Video, move2: Video, move3: Video, pageState: Page
         modifier = Modifier
             .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        ShowStyleRowImageItem(move = move1, pageState = pageState)
-        ShowStyleRowImageItem(move = move2, pageState = pageState)
-        ShowStyleRowImageItem(move = move3, pageState = pageState)
+        ShowStyleImageItem(pageState = pageState,move1.cover,move1.isCheck,move1.name, dp_113, dp_144){
+            LogHelper.d(move1.name)
+        }
+        ShowStyleImageItem(pageState = pageState,move2.cover,move2.isCheck,move2.name, dp_113, dp_144){
+            LogHelper.d(move2.name)
+        }
+        ShowStyleImageItem(pageState = pageState,move3.cover,move3.isCheck,move3.name, dp_113, dp_144){
+            LogHelper.d(move3.name)
+        }
     }
 }
 @Composable
-fun ShowStyleRowImageItem(move: Video, pageState: PageState){
+fun ShowStyleImageItem(pageState: PageState,cover:String,tagIscheck:String,name: String,width: Dp,height:Dp,ItemClick:()->Unit={}){
     Column(modifier = Modifier) {
         Box(modifier = Modifier) {
             AsyncImage(
-                model = move.cover,
+                model = cover,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(width = dp_113, height = dp_144)
+                    .size(width = width, height = height)
                     .clip(RoundedCornerShape(dp_8))
+                    .clickable {
+                        ItemClick()
+                    }
                     .placeholder(
                         visible = pageState is PageState.Loading,
                         highlight = PlaceholderHighlight.shimmer()
@@ -176,7 +208,7 @@ fun ShowStyleRowImageItem(move: Video, pageState: PageState){
                 contentScale = ContentScale.Crop
             )
             Image(
-                painter = painterResource(id = if (move.isCheck == "1") R.mipmap.free_icon else R.mipmap.vip_icon),
+                painter = painterResource(id = if (tagIscheck == "1") R.mipmap.free_icon else R.mipmap.vip_icon),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(top = dp_4, end = dp_4)
@@ -187,7 +219,7 @@ fun ShowStyleRowImageItem(move: Video, pageState: PageState){
             )
         }
         Spacer(modifier = Modifier.height(dp_10))
-        Text(text = move.name, fontSize = sp_13, color = white)
+        Text(text = name, fontSize = sp_13, color = white)
     }
 }
 
