@@ -49,23 +49,7 @@ class HomeViewModel @Inject constructor(private val service: HttpService) : View
                 )
             }.catch {
                 viewStates = viewStates.copy(pageState = PageState.Error(it))
-            }.onCompletion {
-                val s = listOf(
-                    HeadMenu(label = "沙僧", mhid = "11"),
-                    HeadMenu(label = "沙1僧", mhid = "11"),
-                    HeadMenu(label = "1沙僧", mhid = "11"),
-                    HeadMenu(label = "染发", mhid = "11"),
-                    HeadMenu(label = "福袋", mhid = "11"),
-                    HeadMenu(label = "而非", mhid = "11"),
-                    HeadMenu(label = "反倒是", mhid = "11"),
-//                    HeadMenu(label = "说的我", mhid = "3123"),
-//                    HeadMenu(label = "说的我", mhid = "3123"),
-//                    HeadMenu(label = "等分", mhid = "3123"),
-//                    HeadMenu(label = "反倒是", mhid = "3123"),
-                )
-                val ss = viewStates.headMenus
-                ss.addAll(s)
-            }.collect()
+            }. collect()
 
         }
     }

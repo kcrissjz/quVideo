@@ -15,8 +15,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.fsd.quvideo.http.PageState
-import com.fsd.quvideo.ui.theme.black_333
-import com.fsd.quvideo.ui.theme.primary
+import com.fsd.quvideo.ui.theme.*
 
 /**
  * 通过State进行控制的Loading、Content、Error页面
@@ -29,9 +28,11 @@ import com.fsd.quvideo.ui.theme.primary
 fun LcePage(
     pageState: PageState,
     onRetry: () -> Unit,
+    Refresh:()->Unit= {},
     content: @Composable () -> Unit
 ) = when (pageState) {
     is PageState.Loading -> PageLoading()
+    is PageState.Refreshing -> Refresh()
     is PageState.Error -> ErrorContent(onRetry)
     is PageState.Success -> {
         if (pageState.isEmpty) {
@@ -44,20 +45,19 @@ fun LcePage(
 
 @Composable
 fun PageLoading() {
-    Box(modifier = Modifier.size(100.dp)) {
-        Column(modifier = Modifier.align(Alignment.Center)) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.align(Alignment.Center), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator(
-                color = primary,
+                color = white,
                 modifier = Modifier
-                    .padding(10.dp)
-                    .width(50.dp)
-                    .height(50.dp)
+                    .size(dp_30)
             )
             Text(
                 text = "正在加载中",
+                color = white,
+                fontSize = sp_13,
                 modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .padding(top = 10.dp)
+                    .padding(top = dp_8)
             )
         }
     }
@@ -75,6 +75,8 @@ fun PageEmpty() {
             )
             Text(
                 text = "暂无相关内容",
+                color= white,
+                fontSize = sp_13,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 10.dp)
@@ -95,6 +97,7 @@ fun ErrorContent(retry: () -> Unit) {
             )
             Text(
                 text = "请求出错啦",
+                color = white,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(top = 10.dp)
@@ -106,7 +109,7 @@ fun ErrorContent(retry: () -> Unit) {
                     .padding(10.dp),
                 colors = ButtonDefaults.buttonColors(backgroundColor = primary)
             ) {
-                Text(text = "重试")
+                Text(text = "重试",color= white)
             }
         }
     }

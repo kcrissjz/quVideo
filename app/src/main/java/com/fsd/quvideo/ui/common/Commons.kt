@@ -50,7 +50,7 @@ fun TextTabBar(
                 Text(
                     text = tabTitle.label,
                     fontSize = if (index == i) sp_22 else sp_15,
-                    fontWeight = if (index == i) FontWeight.SemiBold else FontWeight.Normal,
+                    fontWeight = if (index == i) FontWeight.Bold else FontWeight.Normal,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(horizontal = dp_11)

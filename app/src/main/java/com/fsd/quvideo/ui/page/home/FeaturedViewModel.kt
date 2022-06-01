@@ -25,21 +25,24 @@ class FeaturedViewModel @Inject constructor(private val service: HttpService) : 
     fun dispatch(action: FeaturedViewAction) {
         when (action) {
             is FeaturedViewAction.UpdatePageInfoByMhid -> {
-                fetchPageInfoByMhidData(action.mhid)
+                fetchPageInfoByMhidData(action.mhid, pageState = PageState.Loading)
+            }
+            is FeaturedViewAction.RefreshPageInfoByMhid -> {
+                fetchPageInfoByMhidData(action.mhid, pageState = PageState.Refreshing)
             }
         }
     }
 
-    private fun fetchPageInfoByMhidData(mhid: String) {
+    private fun fetchPageInfoByMhidData(mhid: String,pageState: PageState) {
         viewModelScope.launch {
             val params = JSONReqParams.construct().put("mhid", mhid)
             flow {
                 emit(service.getPageInfoByHeaderMenusId(params.encrypt(), params.map))
             }.onStart {
-                featuredViewState = featuredViewState.copy(pageState = PageState.Loading)
+                featuredViewState = featuredViewState.copy(pageState = pageState)
             }.onEach {
                 featuredViewState = featuredViewState.copy(
-                    pageState = PageState.Success(true),
+                    pageState = PageState.Success(it.data==null),
                     featureData = it.data!!
                 )
             }.catch {
@@ -56,4 +59,5 @@ data class FeaturedViewState(
 
 sealed class FeaturedViewAction() {
     data class UpdatePageInfoByMhid(val mhid: String) : FeaturedViewAction()
+    data class RefreshPageInfoByMhid(val mhid: String) : FeaturedViewAction()
 }
