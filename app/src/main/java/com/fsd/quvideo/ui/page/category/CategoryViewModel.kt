@@ -1,4 +1,4 @@
-package com.fsd.quvideo.viewmodel
+package com.fsd.quvideo.ui.page.category
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,28 +7,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fsd.quvideo.http.HttpService
 import com.fsd.quvideo.http.PageState
-import com.fsd.quvideo.http.encrypt.JSONReqParams
 import com.fsd.quvideo.http.encrypt.NoneParam
-import com.fsd.quvideo.model.entity.FeatureData
-import com.fsd.quvideo.model.entity.HeadMenu
+import com.fsd.quvideo.model.entity.CategoryItem
 import com.fsd.quvideo.ui.common.TabTitle
+import com.fsd.quvideo.util.LogHelper
+import com.fsd.quvideo.util.showToast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val service: HttpService) : ViewModel() {
-    var viewStates by mutableStateOf(HomeViewState())
+class CategoryViewModel @Inject constructor(private val service: HttpService) :ViewModel() {
+    var viewStates by mutableStateOf(CategoryViewState())
         private set
-
     init {
-        dispatch(HomeViewAction.FetchData)
+        dispatch(CategoryViewAction.FetchData)
     }
 
-    fun dispatch(action: HomeViewAction) {
+    fun dispatch(action: CategoryViewAction) {
         when (action) {
-            is HomeViewAction.FetchData -> {
+            is CategoryViewAction.FetchData -> {
                 fetchData()
             }
         }
@@ -38,23 +37,22 @@ class HomeViewModel @Inject constructor(private val service: HttpService) : View
         viewModelScope.launch {
             flow {
                 val pair = NoneParam.getPair()
-                emit(service.getHeaderMenus(pair.first, pair.second))
+                emit(service.getTypePageTypes(pair.first, pair.second))
             }.onStart {
                 viewStates = viewStates.copy(pageState = PageState.Loading)
             }.map {
                 it.data ?: arrayListOf()
             }.onEach {
-
-
                 viewStates = viewStates.copy(
                     pageState = PageState.Success(it.isEmpty()),
-                    headMenus = it,
+                    headTypes = it[0].items?: emptyList(),
                 )
-                it.forEachIndexed { index, headMenu ->
-                    viewStates.tabTitleList.add(TabTitle(id = headMenu.mhid, text = headMenu.label))
+                it[0].items?.forEachIndexed { index, item ->
+                    viewStates.tabTitleList.add(TabTitle(id = item?.mtid?:"", text = item?.name?:""))
                 }
-
             }.catch {
+                showToast(it.message)
+                LogHelper.d("catch:${it.message}")
                 viewStates = viewStates.copy(pageState = PageState.Error(it))
             }. collect()
 
@@ -62,15 +60,13 @@ class HomeViewModel @Inject constructor(private val service: HttpService) : View
     }
 
 
-
 }
-
-data class HomeViewState(
+data class CategoryViewState(
     val pageState: PageState = PageState.Loading,
-    val headMenus: MutableList<HeadMenu> = arrayListOf(),
+    val headTypes: List<CategoryItem.Item?>? = emptyList(),
     val tabTitleList:MutableList<TabTitle> = arrayListOf()
 )
 
-sealed class HomeViewAction() {
-    object FetchData : HomeViewAction()
+sealed class CategoryViewAction() {
+    object FetchData : CategoryViewAction()
 }

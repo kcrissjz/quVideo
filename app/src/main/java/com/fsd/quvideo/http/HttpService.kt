@@ -58,7 +58,7 @@ interface HttpService {
     suspend fun getTypePageTypes(
         @Header("s") s: String,
         @QueryMap map: Map<String, @JvmSuppressWildcards Any>
-    ): BasicBean<Any>
+    ): BasicBean<List<CategoryItem>>
 
     @POST("voi/video/getVideosByMtids")
     suspend fun getVideosByMtids(

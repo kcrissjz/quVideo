@@ -28,7 +28,7 @@ import com.fsd.quvideo.ui.theme.*
 @Composable
 fun TextTabBar(
     index: Int,
-    tabTexts: List<HeadMenu>,
+    tabTexts: List<TabTitle>,
     modifier: Modifier = Modifier,
     contentAlign: Alignment = Alignment.Center,
     bgColor: Color = black_211,
@@ -48,7 +48,7 @@ fun TextTabBar(
         ) {
             tabTexts.forEachIndexed { i, tabTitle ->
                 Text(
-                    text = tabTitle.label,
+                    text = tabTitle.text,
                     fontSize = if (index == i) sp_22 else sp_15,
                     fontWeight = if (index == i) FontWeight.Bold else FontWeight.Normal,
                     modifier = Modifier
@@ -108,3 +108,8 @@ fun HomeSearchBar(
         Icon(imageVector = Icons.Default.History, contentDescription = null, tint = gray_999 )
     }
 }
+
+data class TabTitle(
+    var id: String,
+    var text: String,
+)

@@ -92,3 +92,6 @@ data class Video(
     val shortDesc: String,
     val vid: Int
 )
+
+//data class Category(val typeLocation:String,val list:List<CategoryType>?)
+//data class CategoryType(var mtid:String?=null,val name: String)
